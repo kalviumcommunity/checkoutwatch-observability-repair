@@ -26,7 +26,7 @@ docker compose ps
 
 Allow up to 45 seconds for health checks and initial scrapes. Expected original symptoms: the app is **unhealthy**, logs are plain text, and the Prometheus app target is **DOWN**. The app process and monitoring UI still start.
 
-Image downloads require internet. Host ports 8080 and 9090 must be available. Stop only your own conflicting services or ask your instructor for help. Missing tools, blocked downloads, and fork restrictions are infrastructure issues, not planted faults. No cloud workaround is required.
+Image downloads require internet. Host ports 8080 and 9090 must be available. Stop only your own conflicting services only if safe to do so. Missing tools, blocked downloads, and fork restrictions are infrastructure issues, not planted faults. No cloud workaround is required.
 
 ## Expected contract
 
@@ -93,14 +93,12 @@ done
 
 With no other checkout traffic or intervening app restart, the counter increases by five. It resets when the app restarts; do not rebuild midway through this comparison.
 
-## Save and submit
+## Scope and cleanup
 
-Commit and push fixes to `fix/ca5-observability` in **your own public fork**. Do not open an upstream pull request. Submit the PDF specified by your instructor, not a PR, ZIP, or video.
-
-Include genuine before/after evidence for all three tasks, matching your assessment's exact labels, and public fork/branch links. Use `CA5_YourName.pdf`, below 2,000,000 bytes. Follow the assessment for the complete rubric.
-
-After collecting evidence:
+Repair the existing container probe, shared log formatter, and Prometheus scrape configuration. Preserve checkout business logic, controlled failure, request correlation, metric semantics and ports. Compare original and repaired observations; do not replace live signals with constants or disable checks. No Grafana, alert-rule implementation, cloud deployment or real credentials needed.
 
 ```bash
 docker compose down
 ```
+
+Remove only your exercise resources.
