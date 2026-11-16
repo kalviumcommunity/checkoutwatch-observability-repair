@@ -1,6 +1,6 @@
 # CheckoutWatch Observability Repair
 
-DevOps Foundation CA 5 starter. Exactly three faults affect container health monitoring, log formatting, and Prometheus collection. Repair the existing scaffold; do not implement a new application. Everything runs locally at ₹0 / $0.
+DevOps  starter. Exactly three faults affect container health monitoring, log formatting, and Prometheus collection. Repair the existing scaffold; do not implement a new application. Everything runs locally at ₹0 / $0.
 
 ## Setup
 
@@ -102,3 +102,62 @@ docker compose down
 ```
 
 Remove only your exercise resources.
+
+Repair Report and Submission Guide
+
+1. The three faults and the fixes
+
+Fault 1, container health. The app showed unhealthy. The HEALTHCHECK in Dockerfile requested /healthz, which does not exist and returns 404. Fix: it now requests http://localhost:8080/health.
+
+Fault 2, log formatting. Logs were plain text. The shared log() function in server.js wrote a space separated string. Fix: it now writes JSON.stringify(event) followed by a newline, so each event is one JSON object per line with timestamp, level, message, and request_id on checkout events.
+
+Fault 3, Prometheus collection. The checkoutwatch target was DOWN. prometheus.yml scraped app:8081 but the app listens on 8080. Fix: the target is now app:8080.
+
+Nothing else was changed. Checkout logic, the ?fail=1 failure, X-Request-ID, metric behavior and ports are untouched.
+
+2. Expected result after the fix
+
+docker compose ps shows app healthy. The probe prints probe HTTP 200. Every app log line parses with jq. A ?fail=1 request returns 500 and its error log line carries the same request_id as the X-Request-ID header. Prometheus targets page shows checkoutwatch UP. checkout_requests_total goes up by exactly 5 after 5 checkout requests.
+
+3. Evidence note
+
+The fixes were made by reading the code against the contract. Docker was not available on the machine where the edits were made, so runtime output has not been captured yet. Run the steps below on a machine with Docker (GitHub Codespaces is free and has Docker) and keep your own real output. Do not submit invented output.
+
+4. Steps to produce the evidence (copy and paste)
+
+Before evidence, on the original code:
+
+git checkout main
+chmod +x capture-evidence.sh
+./capture-evidence.sh before
+
+After evidence, on the fixed code:
+
+docker compose down
+git checkout fix/ca5-observability
+./capture-evidence.sh after
+
+Manual checks:
+
+docker compose ps
+curl -i http://localhost:8080/health
+curl -i 'http://localhost:8080/checkout?fail=1'
+docker compose logs --no-log-prefix --no-color app | jq -c .
+
+Screenshots to take: Prometheus targets page before (DOWN) and after (UP), docker compose ps before and after, the jq log output, and checkout_requests_total before and after the five requests.
+
+Save evidence in the evidence folder, then:
+
+git add -A
+git add -f evidence
+git commit -m "docs: add evidence"
+git push
+docker compose down
+
+5. How to submit
+
+Push branch fix/ca5-observability to your public GitHub repository https://github.com/sanjaipandian-as/checkoutwatch-observability-repair and submit that URL. Include your screenshots or the evidence folder. Open a pull request if your instructor asks for one.
+
+6. Short write-up to paste
+
+I found three independent faults. The Docker HEALTHCHECK probed /healthz, which returns 404, so the container stayed unhealthy; I changed it to the real /health endpoint. The shared log() function wrote plain text; I changed it to JSON.stringify(event) so every event is one JSON object with timestamp, level, message and, for checkout events, request_id. Prometheus scraped app:8081 while the app listens on 8080, so the target was DOWN; I changed it to app:8080.
