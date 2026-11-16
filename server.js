@@ -14,7 +14,7 @@ const requests = new Counter({
 requests.inc(0);
 
 function log(event) {
-  process.stdout.write(`${event.timestamp} ${event.level} ${event.message} ${event.request_id || '-'}\n`);
+  process.stdout.write(`${JSON.stringify(event)}\n`);
 }
 
 function event(level, message, requestId) {
