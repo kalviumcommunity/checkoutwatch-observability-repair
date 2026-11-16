@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="280" font-family="Arial,sans-serif">
+<rect width="760" height="280" fill="#ffffff" stroke="#999"/>
+<text x="20" y="34" font-size="20" font-weight="bold">CheckoutWatch: 3 faults and fixes (diagram)</text>
+<text x="20" y="71" font-size="14" font-weight="bold">1. Docker HEALTHCHECK (Dockerfile)</text>
+<rect x="20" y="79" width="320" height="32" rx="6" fill="#fde2e2" stroke="#c0392b"/>
+<text x="30" y="100" font-size="12" fill="#7b1f1f">BEFORE: probes /healthz  (404, unhealthy)</text>
+<text x="352" y="101" font-size="20">&#8594;</text>
+<rect x="385" y="79" width="355" height="32" rx="6" fill="#dff5e1" stroke="#2e8b3d"/>
+<text x="395" y="100" font-size="12" fill="#1b5e20">AFTER: probes /health  (200, healthy)</text>
+<text x="20" y="141" font-size="14" font-weight="bold">2. Log formatter (server.js)</text>
+<rect x="20" y="149" width="320" height="32" rx="6" fill="#fde2e2" stroke="#c0392b"/>
+<text x="30" y="170" font-size="12" fill="#7b1f1f">BEFORE: plain text: ts level msg id</text>
+<text x="352" y="171" font-size="20">&#8594;</text>
+<rect x="385" y="149" width="355" height="32" rx="6" fill="#dff5e1" stroke="#2e8b3d"/>
+<text x="395" y="170" font-size="12" fill="#1b5e20">AFTER: JSON.stringify(event) per line</text>
+<text x="20" y="211" font-size="14" font-weight="bold">3. Prometheus target (prometheus.yml)</text>
+<rect x="20" y="219" width="320" height="32" rx="6" fill="#fde2e2" stroke="#c0392b"/>
+<text x="30" y="240" font-size="12" fill="#7b1f1f">BEFORE: app:8081 (connection refused, DOWN)</text>
+<text x="352" y="241" font-size="20">&#8594;</text>
+<rect x="385" y="219" width="355" height="32" rx="6" fill="#dff5e1" stroke="#2e8b3d"/>
+<text x="395" y="240" font-size="12" fill="#1b5e20">AFTER: app:8080 (UP)</text>
+</svg>

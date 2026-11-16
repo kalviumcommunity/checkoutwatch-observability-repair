@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="260" font-family="Arial,sans-serif">
+<rect width="760" height="260" fill="#fff" stroke="#999"/>
+<text x="20" y="32" font-size="20" font-weight="bold">Architecture after repair (diagram)</text>
+<rect x="40" y="90" width="200" height="90" rx="8" fill="#e8f0fe" stroke="#3367d6"/>
+<text x="60" y="120" font-size="15" font-weight="bold">app (Node/Express)</text>
+<text x="60" y="142" font-size="12">:8080  /health /checkout /metrics</text>
+<text x="60" y="162" font-size="12">HEALTHCHECK -&gt; /health</text>
+<rect x="520" y="90" width="200" height="90" rx="8" fill="#fff4e0" stroke="#e08a00"/>
+<text x="540" y="120" font-size="15" font-weight="bold">prometheus</text>
+<text x="540" y="142" font-size="12">:9090  job: checkoutwatch</text>
+<text x="540" y="162" font-size="12">scrape every 5s</text>
+<line x1="520" y1="135" x2="240" y2="135" stroke="#2e8b3d" stroke-width="3"/>
+<text x="290" y="125" font-size="12" fill="#1b5e20">GET app:8080/metrics</text>
+<text x="40" y="225" font-size="12">stdout: one JSON log line per event (timestamp, level, message, request_id)</text>
+</svg>
